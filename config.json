@@ -1,0 +1,26 @@
+{
+	"raceway": {
+		"app_port": ":9999",
+		"app_debug": true
+	},
+	"mysql": {
+		"db_host": "127.0.0.1",
+		"db_port": 3307,
+		"db_user": "rally",
+		"db_pass": "rally",
+		"db_name": "rally"
+	},
+	"scenarios": {
+		"scenario_dir": "/Users/bdowns/gocode/src/gitlab.internal.tinyprints.com/bdowns/raceway/scenarios",
+		"scenario_format": "json"
+	},
+	"graphite": {
+		"graphite_host": ""
+	},
+	"scheduler": {
+		"scheduler_db_bucket": "iops",
+		"scheduler_db_name": "raceway_scheduler.db",
+		"scheduler_db_timeout": 4
+		},
+	"html_output_dir": "html"
+}

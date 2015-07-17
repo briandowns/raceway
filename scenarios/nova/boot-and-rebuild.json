@@ -1,0 +1,28 @@
+{
+   "NovaServers.boot_and_rebuild_server": [
+        {
+            "args": {
+                "flavor": {
+                    "name": "m1.tiny"
+                },
+                "from_image": {
+                    "name": "^cirros.*uec$"
+                },
+                "to_image": {
+                    "name": "^cirros.*uec$"
+                }
+            },
+            "runner": {
+                "type": "constant",
+                "times": 5,
+                "concurrency": 2
+            },
+            "context": {
+                "users": {
+                    "tenants": 1,
+                    "users_per_tenant": 1
+                }
+            }
+        }
+    ]
+}
