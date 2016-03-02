@@ -32,8 +32,8 @@ type Configuration struct {
 	HTMLOutputDir string `json:"html_output_dir"`
 }
 
-// GetConfig builds a config obj
-func GetConfig(cf string) (*Configuration, error) {
+// Load builds a config obj
+func Load(cf string) (*Configuration, error) {
 	confFile, err := os.Open(cf)
 	if err != nil {
 		return nil, err

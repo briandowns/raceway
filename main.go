@@ -14,17 +14,18 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 
-	"gitlab.internal.tinyprints.com/bdowns/raceway/database"
+	"github.com/briandowns/raceway/database"
 )
 
 var taskChan = make(chan string, 0)
 var conf *Configuration
 
+// Task holds task details once initialized
 type Task struct{}
 
 func main() {
 	// Source in the configuration
-	conf, err := GetConfig("./config.json")
+	conf, err := Load("./config.json")
 	if err != nil {
 		log.Fatalln(err)
 	}

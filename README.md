@@ -27,7 +27,7 @@ $ ./install_rally.sh --target ../rally --overwrite --verbose --dbtype mysql --db
 ## Usage
 
 ```bash
-$ git clone git@gitlab.internal.tinyprints.com:bdowns/raceway.git
+$ git clone git@github.com:briandowns/raceway.git
 $ go run main.go scenarios.go scheduler.go config.go
 ```
 
