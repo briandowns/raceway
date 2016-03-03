@@ -5,7 +5,7 @@ Raceway is an application to manage [OpenStack](https://www.openstack.org/) [Ral
 ## Requirements
 
 * OpenStack Rally
-* MySQL/MariaDB running on port 3307.
+* MySQL/MariaDB
 
 ## Creating database and user credentials for OpenStack Rally
 ```bash
@@ -51,7 +51,7 @@ go get github.com/briandowns/raceway/database
 
 ## Configurations
 
-Raceway is configured to run on MariaDB/MySQL port 3307. If your database application is runnning on a different port please update the port in `config.json` before running.
+Raceway is configured to connect to MariaDB/MySQL on port 3307 by default. If your database instance is runnning on a different port please update the port in `config.json` before running. Raceway app is running on port `9999` by default. This can be changed in `config.json`.
 
 ## Usage
 
