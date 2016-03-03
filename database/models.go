@@ -1,79 +1,83 @@
 package database
 
-// Deployments is the model for the rally.deployments table
-type Deployments struct {
-	CreatedAt             string `db:"created_at"`
-	UpdatedAt             string `db:"updated_at"`
-	ID                    int    `db:"id"`
-	UUID                  string `db:"uuid"`
-	ParentUUID            []byte `db:"parent_uuid"`
-	Name                  string `db:"name"`
-	StartedAt             string `db:"started_at"`
-	CompletedAt           string `db:"completed_at"`
-	EnumDeploymentsStatus string `db:"enum_deployments_status"`
+import (
+	"time"
+)
+
+// Deployment is the model for the rally.deployments table
+type Deployment struct {
+	ID                    int       `sql:"auto_increment" gorm:"column:id" gorm:"primary_key" json:"id"`
+	CreatedAt             time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt             time.Time `gorm:"column:updated_at" json:"updated_at"`
+	UUID                  string    `gorm:"column:uuid" json:"uuid"`
+	ParentUUID            []byte    `gorm:"column:parent_uuid" json:"parent_uuid"`
+	Name                  string    `gorm:"column:name" json:"name"`
+	StartedAt             time.Time `gorm:"column:started_at" json:"started_at"`
+	CompletedAt           time.Time `gorm:"column:completed_at" json:"completed_at"`
+	EnumDeploymentsStatus string    `gorm:"column:enum_deployments_status" json:"enum_deployments_status"`
 }
 
-// Resources is the model for the rally.Resources table
-type Resources struct {
-	CreatedAt      string `db:"created_at"`
-	UpdatedAt      string `db:"updated_at"`
-	ID             int    `db:"id"`
-	ProviderName   string `db:"provider_name"`
-	Type           string `db:"type"`
-	Info           string `db:"info"`
-	DeploymentUUID string `db:"deployment_uuid"`
+// Resource is the model for the rally.Resources table
+type Resource struct {
+	ID             int       `sql:"auto_increment" gorm:"column:id" gorm:"primary_key" json:"id"`
+	CreatedAt      time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt      time.Time `gorm:"column:updated_at" json:"updated_at"`
+	ProviderName   string    `gorm:"column:provider_name" json:"provider_name"`
+	Type           string    `gorm:"column:type" json:"type"`
+	Info           string    `gorm:"column:info" json:"info"`
+	DeploymentUUID string    `gorm:"column:deployment_uuid" json:"deployment_uuid"`
 }
 
-// Tasks is the model for the rally.tasks table
-type Tasks struct {
-	CreatedAt       string `db:"created_at"`
-	UpdatedAt       string `db:"updated_at"`
-	ID              int    `db:"id"`
-	UUID            string `db:"uuid"`
-	Status          string `db:"status"`
-	VerificationLog string `db:"verification_log"`
-	Tag             string `db:"tag"`
-	DeploymentUUID  string `db:"deployment_uuid"`
+// Task is the model for the rally.tasks table
+type Task struct {
+	ID              int       `sql:"auto_increment" gorm:"column:id" gorm:"primary_key" json:"id"`
+	CreatedAt       time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt       time.Time `gorm:"column:updated_at" json:"updated_at"`
+	UUID            string    `gorm:"column:uuid" json:"uuid"`
+	Status          string    `gorm:"column:status" json:"status"`
+	VerificationLog string    `gorm:"column:verification_log" json:"verification_log"`
+	Tag             string    `gorm:"column:tag" json:"tag"`
+	DeploymentUUID  string    `gorm:"column:deployment_uuid" json:"deployment_uuid"`
 }
 
-// TaskResults is the model for the rally.task_results table
-type TaskResults struct {
-	CreatedAt string `db:"created_at"`
-	UpdatedAt string `db:"updated_at"`
-	ID        int    `db:"id"`
-	Key       string `db:"key"`
-	Data      string `db:"data"`
-	TaskUUID  string `db:"task_uuid"`
+// TaskResult is the model for the rally.task_results table
+type TaskResult struct {
+	ID        int       `sql:"auto_increment" gorm:"column:id" gorm:"primary_key" json:"id"`
+	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
+	Key       string    `gorm:"column:key" json:"key"`
+	Data      string    `gorm:"column:data" json:"data"`
+	TaskUUID  string    `gorm:"column:task_uuid" json:"task_uuid"`
 }
 
-// VerificationResults is the model for the rally.verification_results table
-type VerificationResults struct {
-	CreatedAt        string `db:"created_at"`
-	UpdatedAt        string `db:"updated_at"`
-	ID               int    `db:"id"`
-	VerificationUUID string `db:"verification_uuid"`
-	Data             string `db:"data"`
+// VerificationResult is the model for the rally.verification_results table
+type VerificationResult struct {
+	ID               int       `sql:"auto_increment" gorm:"column:id" gorm:"primary_key" json:"id"`
+	CreatedAt        time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt        time.Time `gorm:"column:updated_at" json:"updated_at"`
+	VerificationUUID string    `gorm:"column:verification_uuid" json:"verification_uuid"`
+	Data             string    `gorm:"column:data" json:"data"`
 }
 
-// Verifications is the model for the rally.verifications table
-type Verifications struct {
-	CreatedAt      string  `db:"created_at"`
-	UpdatedAt      string  `db:"updated_at"`
-	ID             int     `db:"id"`
-	UUID           string  `db:"uuid"`
-	DeploymentUUID string  `db:"deployment_uuid"`
-	Status         string  `db:"status"`
-	SetName        string  `db:"set_name"`
-	Tests          int     `db:"tests"`
-	Errors         int     `db:"errors"`
-	Failures       int     `db:"failures"`
-	Time           float64 `db:"time"`
+// Verification is the model for the rally.verifications table
+type Verification struct {
+	ID             int       `sql:"auto_increment" gorm:"column:id" gorm:"primary_key" json:"id"`
+	CreatedAt      time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt      time.Time `gorm:"column:updated_at" json:"updated_at"`
+	UUID           string    `gorm:"column:uuid" json:"uuid"`
+	DeploymentUUID string    `gorm:"column:deployment_uuid" json:"deployment_uuid"`
+	Status         string    `gorm:"column:status" json:"status"`
+	SetName        string    `gorm:"column:set_name" json:"set_name"`
+	Tests          int       `gorm:"column:tests" json:"tests"`
+	Errors         int       `gorm:"column:errors" json:"errors"`
+	Failures       int       `gorm:"column:failures" json:"failures"`
+	Time           time.Time `gorm:"column:time" json:"time"`
 }
 
-// Workers is the model for the rally.workers table
-type Workers struct {
-	CreatedAt string `db:"created_at"`
-	UpdatedAt string `db:"updated_at"`
-	ID        int    `db:"id"`
-	Hostname  string `db:"hostname"`
+// Worker is the model for the rally.workers table
+type Worker struct {
+	ID        int       `sql:"auto_increment" gorm:"column:id" gorm:"primary_key" json:"id"`
+	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
+	Hostname  string    `gorm:"column:hostname" json:"hostname"`
 }

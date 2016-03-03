@@ -1,22 +1,24 @@
-package main
+package config
 
 import (
 	"encoding/json"
 	"os"
 )
 
-// Configuration contains the Raceway configuration
-type Configuration struct {
+// Config contains the Raceway configuration
+// TODO(briandowns) break this into individual struct types
+type Config struct {
 	Raceway struct {
 		AppPort  string `json:"app_port"`
 		AppDebug bool   `json:"app_debug"`
 	} `json:"raceway"`
-	MySQL struct {
-		DBHost string `json:"db_host"`
-		DBPort int    `json:"db_port"`
-		DBUser string `json:"db_user"`
-		DBPass string `json:"db_pass"`
-		DBName string `json:"db_name"`
+	Database struct {
+		DBHost  string `json:"db_host"`
+		DBPort  int    `json:"db_port"`
+		DBUser  string `json:"db_user"`
+		DBPass  string `json:"db_pass"`
+		DBName  string `json:"db_name"`
+		DBDebug bool   `json:"db_debug"`
 	} `json:"mysql"`
 	Scenarios struct {
 		ScenarioDir    string `json:"scenario_dir"`
@@ -34,16 +36,16 @@ type Configuration struct {
 }
 
 // Load builds a config obj
-func Load(cf string) (*Configuration, error) {
+func Load(cf string) (*Config, error) {
 	confFile, err := os.Open(cf)
 	if err != nil {
 		return nil, err
 	}
 	decoder := json.NewDecoder(confFile)
-	conf := &Configuration{}
+	var conf Config
 	err = decoder.Decode(conf)
 	if err != nil {
 		return nil, err
 	}
-	return conf, nil
+	return &conf, nil
 }
