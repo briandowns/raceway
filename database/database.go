@@ -79,6 +79,13 @@ func TaskByUUID(conn *sqlx.DB, taskUUID string) ([]Tasks, error) {
 	return tasks, nil
 }
 
+// GetTasks gets all tasks from the database
+func (d *Database) GetTasks() []Task {
+	var data []Task
+	d.Conn.Find(&data)
+	return data
+}
+
 // TasksRunning gets all tasks Rally is aware of with a status of 'running'
 func TasksRunning(conn *sqlx.DB) ([]Tasks, error) {
 	tasks := []Tasks{}

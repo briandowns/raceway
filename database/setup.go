@@ -5,28 +5,28 @@ import "log"
 // Setup ...sets up the database
 func (d *Database) Setup() {
 	log.Println("Race database setup starting...")
-	d.Conn.CreateTable(&Deployments{})
-	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Deployments{})
+	d.Conn.CreateTable(&Deployment{})
+	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Deployment{})
 
-	d.Conn.CreateTable(&Resources{})
-	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Resources{})
+	d.Conn.CreateTable(&Resource{})
+	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Resource{})
 
-	d.Conn.CreateTable(&Tasks{})
-	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Tasks{})
+	d.Conn.CreateTable(&Task{})
+	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Task{})
 
-	d.Conn.CreateTable(&TaskResults{})
-	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&TaskResults{})
+	d.Conn.CreateTable(&TaskResult{})
+	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&TaskResult{})
 
-	d.Conn.CreateTable(&VerificationResults{})
-	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&VerificationResults{})
+	d.Conn.CreateTable(&VerificationResult{})
+	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&VerificationResult{})
 
-	d.Conn.CreateTable(&Verifications{})
-	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Verifications{})
+	d.Conn.CreateTable(&Verification{})
+	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Verification{})
 
-	d.Conn.CreateTable(&Workers{})
-	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Workers{})
+	d.Conn.CreateTable(&Worker{})
+	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Worker{})
 
 	d.Conn.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
-		&Deployments{}, &Resources{}, &Tasks{}, &TaskResults{}, &VerificationResults{}, &Verifications{}, &Workers{})
+		&Deployment{}, &Resource{}, &Task{}, &TaskResult{}, &VerificationResult{}, &Verification{}, &Worker{})
 	log.Println("Complete!")
 }
