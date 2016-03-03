@@ -7,7 +7,7 @@ Raceway is an application to manage [OpenStack](https://www.openstack.org/) [Ral
 * OpenStack Rally
 * MySQL
 
-OpenStack Rally should be installed with the following parameters:
+OpenStack Rally should be installed with the following steps.  This makes sure you are running the latest version.
 
 ```bash
 $ wget https://github.com/openstack/rally/archive/master.zip
@@ -24,11 +24,15 @@ $ ./install_rally.sh --target ../rally --overwrite --verbose --dbtype mysql --db
 
 ## Installation 
 
+Simply put the Raceway binary in your path with the public directory.
+
 ## Usage
 
 ```bash
 $ git clone git@github.com:briandowns/raceway.git
-$ go run main.go scenarios.go scheduler.go config.go
+$ cd raceway
+$ make build
+$ ./raceway --help
 ```
 
 ### Web UI
@@ -60,7 +64,7 @@ Not written yet.  This will basically interact with the REST API though so getti
 
 ## Contributing
 
-* Clone the repo
+* Fork the repo
 * Create a new branch
 * Commit changes
 * Write tests if applicable
@@ -68,6 +72,6 @@ Not written yet.  This will basically interact with the REST API though so getti
 
 ## TODO
 
-- [ ] CLI
+- [ ] CLI client
 - [ ] Endpoint authentication
 - [ ] Proper web UI: Polymer, Bootstrap, Angular?
