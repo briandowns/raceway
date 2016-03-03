@@ -25,9 +25,6 @@ var Conf *config.Config
 
 var signalsChan = make(chan os.Signal, 1)
 
-// Task holds task details once initialized
-type Task struct{}
-
 func main() {
 	signal.Notify(signalsChan, os.Interrupt)
 
