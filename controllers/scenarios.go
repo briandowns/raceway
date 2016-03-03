@@ -1,19 +1,18 @@
-package main
+package controllers
 
 import (
 	"encoding/json"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
-)
 
-// NewDeploymentParams holds the decoded JSON from a POST to create
-// a new deployment
-type NewDeploymentParams struct {
-	FromENV bool   `json:"from_env"`
-	Name    string `json:"name"`
-}
+	"github.com/gorilla/mux"
+	"github.com/unrolled/render"
+
+	"github.com/briandowns/raceway/config"
+)
 
 // ScenarioContent provides the contents for a given scenario
 func ScenarioContent(scenPath, scenario string) map[string]interface{} {
@@ -78,4 +77,20 @@ func Scenarios(scenPath string, scenFormat string) map[string][]string {
 		return nil
 	}
 	return foundMap
+}
+
+// ScenariosHandler
+func ScenariosHandler(ren *render.Render, conf *config.Config) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		ren.JSON(w, http.StatusOK, Scenarios(conf.Scenarios.ScenarioDir, conf.Scenarios.ScenarioFormat))
+	}
+}
+
+// ScenariosByNameHandler
+func ScenariosByNameHandler(ren *render.Render, conf *config.Config) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		scenarioName := vars["name"]
+		ren.JSON(w, http.StatusOK, ScenarioContent(conf.Scenarios.ScenarioDir, scenarioName))
+	}
 }

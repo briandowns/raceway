@@ -1,4 +1,4 @@
-package main
+package scheduler
 
 //# * * * * *  command to execute
 // # │ │ │ │ │
@@ -20,6 +20,7 @@ import (
 	"github.com/robfig/cron"
 
 	"github.com/briandowns/raceway/config"
+	"github.com/briandowns/raceway/database"
 )
 
 // ScheduleChan sends and receives Schedule instances
@@ -39,7 +40,7 @@ type Schedule struct {
 	ID       string
 	Schedule string
 	Status   status
-	Task     Task
+	Task     database.Task
 }
 
 // newSchedule creates a new isntance "Schedule"
@@ -51,10 +52,10 @@ func newSchedule() *Schedule {
 }
 
 // scheduleDB returns a connection instance to Bolt
-func scheduleDB() (*bolt.DB, error) {
-	db, err := bolt.Open(Conf.Scheduler.SchedulerDBName, 0644,
+func scheduleDB(conf *config.Config) (*bolt.DB, error) {
+	db, err := bolt.Open(conf.Scheduler.SchedulerDBName, 0644,
 		&bolt.Options{
-			Timeout: time.Duration(Conf.Scheduler.SchedulerDBTimeout) * time.Second,
+			Timeout: time.Duration(conf.Scheduler.SchedulerDBTimeout) * time.Second,
 		})
 	if err != nil {
 		fmt.Println(err)
@@ -64,8 +65,8 @@ func scheduleDB() (*bolt.DB, error) {
 }
 
 // ScheduleDBPath returns the path to the scheduler db file
-func ScheduleDBPath() (string, error) {
-	db, err := scheduleDB()
+func ScheduleDBPath(conf *config.Config) (string, error) {
+	db, err := scheduleDB(conf)
 	if err != nil {
 		return "", err
 	}
@@ -83,7 +84,7 @@ func (s *Schedule) String() string {
 func StartScheduler(conf *config.Config) {
 	c := cron.New()
 	c.Start()
-	db, err := scheduleDB()
+	db, err := scheduleDB(conf)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -111,15 +112,15 @@ func StartScheduler(conf *config.Config) {
 }
 
 // ScheduleExists verifies whether or not a task already has a presence
-func scheduleExists(scheduleUUID string) (bool, error) {
-	db, err := scheduleDB()
+func scheduleExists(scheduleUUID string, conf *config.Config) (bool, error) {
+	db, err := scheduleDB(conf)
 	if err != nil {
 		return false, err
 	}
 	defer db.Close()
 	var found bool
 	err = db.View(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte(Conf.Scheduler.SchedulerDBBucket))
+		b := tx.Bucket([]byte(conf.Scheduler.SchedulerDBBucket))
 		b.ForEach(func(k, v []byte) error {
 			if string(k) == scheduleUUID {
 				found = true
@@ -133,8 +134,8 @@ func scheduleExists(scheduleUUID string) (bool, error) {
 }
 
 // ScheduleTask creates a new schedule for a given task
-func (s *Schedule) ScheduleTask(task Task, sched string) error {
-	db, err := scheduleDB()
+func (s *Schedule) ScheduleTask(task database.Task, sched string, conf *config.Config) error {
+	db, err := scheduleDB(conf)
 	if err != nil {
 		return err
 	}
@@ -145,13 +146,13 @@ func (s *Schedule) ScheduleTask(task Task, sched string) error {
 }
 
 // UnscheduleTask will remove a scheduled task
-func UnscheduleTask(scheduleUUID string) error {
-	db, err := scheduleDB()
+func UnscheduleTask(scheduleUUID string, conf *config.Config) error {
+	db, err := scheduleDB(conf)
 	if err != nil {
 		return err
 	}
 	defer db.Close()
-	exists, err := scheduleExists(scheduleUUID)
+	exists, err := scheduleExists(scheduleUUID, conf)
 	if err != nil {
 		return err
 	}
@@ -162,8 +163,8 @@ func UnscheduleTask(scheduleUUID string) error {
 }
 
 // ShowSchedules retunns a map of all entered schedules
-func ShowSchedules() ([]Schedule, error) {
-	db, err := scheduleDB()
+func ShowSchedules(conf *config.Config) ([]Schedule, error) {
+	db, err := scheduleDB(conf)
 	if err != nil {
 		return nil, err
 	}
@@ -171,7 +172,7 @@ func ShowSchedules() ([]Schedule, error) {
 	var found []Schedule
 	err = db.View(func(tx *bolt.Tx) error {
 		var result Schedule
-		b := tx.Bucket([]byte(Conf.Scheduler.SchedulerDBBucket))
+		b := tx.Bucket([]byte(conf.Scheduler.SchedulerDBBucket))
 		b.ForEach(func(k, v []byte) error {
 			err = json.Unmarshal(v, &result)
 			if err != nil {
