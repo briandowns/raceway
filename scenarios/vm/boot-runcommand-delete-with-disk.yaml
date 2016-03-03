@@ -1,16 +1,17 @@
+{% set flavor_name = flavor_name or "m1.tiny" %}
 ---
   VMTasks.boot_runcommand_delete:
     -
       args:
         flavor:
-            name: "m1.tiny"
+            name: "{{flavor_name}}"
         image:
             name: "^cirros.*uec$"
         volume_args:
             size: 2
         fixed_network: "private"
         floating_network: "public"
-        use_floatingip: true
+        use_floating_ip: true
         force_delete: false
         script: "samples/tasks/support/instance_dd_test.sh"
         interpreter: "/bin/sh"

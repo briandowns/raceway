@@ -18,9 +18,10 @@
                 "concurrency": 5
             },
             "context": {
+                "network": {},
                 "users": {
-                    "tenants": 1,
-                    "users_per_tenant": 1
+                    "tenants": 2,
+                    "users_per_tenant": 3
                 },
                 "quotas": {
                     "neutron": {
