@@ -19,7 +19,7 @@ OpenStack Rally should be installed with the following parameters:
 ```bash
 $ git clone http://github.com/openstack/rally
 $ cd rally
-$ git checkout tags/0.3.0
+$ git checkout tags/0.3.1
 $ ./install_rally.sh --system ../rally --overwrite --verbose --dbtype mysql --db-host localhost --db-user rally --db-password rally --db-name rally
 ```
 
@@ -33,7 +33,7 @@ $ ./install_rally.sh --target ../rally --overwrite --verbose --dbtype mysql --db
 
 ## Configurations
 
-Raceway is configured to connect to MariaDB/MySQL on port 3307 by default. If your database instance is runnning on a different port please update the port in `config.json` before running. Raceway app is running on port `9999` by default. This can be changed in `config.json`.
+Raceway is configured to connect to MariaDB/MySQL on port `3307` by default. If your database instance is runnning on a different port please update the port in `config.json` before running. Raceway app is running on port `9999` by default. This can be changed in `config.json`.
 
 ## Usage
 
