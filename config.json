@@ -3,7 +3,7 @@
 		"app_port": ":9999",
 		"app_debug": true
 	},
-	"mysql": {
+	"database": {
 		"db_host": "127.0.0.1",
 		"db_port": 3307,
 		"db_user": "rally",

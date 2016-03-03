@@ -12,7 +12,7 @@ type Config struct {
 		AppPort  string `json:"app_port"`
 		AppDebug bool   `json:"app_debug"`
 	} `json:"raceway"`
-	MySQL struct {
+	Database struct {
 		DBHost  string `json:"db_host"`
 		DBPort  int    `json:"db_port"`
 		DBUser  string `json:"db_user"`

@@ -48,8 +48,8 @@ func (d *Database) GetDeployments() []Deployment {
 // DeploymentsByName gets all deployments Rally is aware of
 func (d *Database) DeploymentsByName() []Deployment {
 	var data []Deployment
-	return d.Conn.Find(&data)
-	//return data
+	d.Conn.Find(&data)
+	return data
 }
 
 // TaskByUUID gets a task by its UUID
@@ -69,11 +69,13 @@ func (d *Database) GetTasks() []Task {
 // TasksRunning gets all tasks Rally is aware of with a status of 'running'
 func (d *Database) TasksRunning() []Task {
 	var data []Task
+	d.Conn.Find(&data)
 	return data
 }
 
 // TaskResultsByUUID gets the results of a task by ID after it's been run
-func (d *Database) TaskResultsByUUID() []TaskResult {
+func (d *Database) TaskResultsByUUID(uuid string) []TaskResult {
 	var data []TaskResult
+	d.Conn.Where("uuid = ?", uuid).Find(&data)
 	return data
 }
