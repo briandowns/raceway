@@ -10,9 +10,10 @@
         times: 100
         concurrency: 10
       context:
+        network: {}
         users:
-          tenants: 1
-          users_per_tenant: 1
+          tenants: 3
+          users_per_tenant: 3
         quotas:
           neutron:
             network: -1
