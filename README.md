@@ -31,24 +31,6 @@ $ ./install_rally.sh --target ../rally --overwrite --verbose --dbtype mysql --db
 
 ## Installation
 
-## Remote Package Dependencies
-
-Packages will be installed to your workspace directory set by GOPATH environment variable. Run `echo $GOPATH` to show your workspace directory.
-
-```bash
-go get github.com/go-sql-driver/mysql
-go get github.com/jmoiron/sqlx
-go get github.com/pborman/uuid
-go get github.com/boltdb/bolt
-go get github.com/codegangsta/negroni
-go get github.com/goincremental/negroni-sessions
-go get github.com/goincremental/negroni-sessions/cookiestore
-go get github.com/gorilla/mux
-go get github.com/robfig/cron
-go get github.com/unrolled/render
-go get github.com/briandowns/raceway/database
-```
-
 ## Configurations
 
 Raceway is configured to connect to MariaDB/MySQL on port 3307 by default. If your database instance is runnning on a different port please update the port in `config.json` before running. Raceway app is running on port `9999` by default. This can be changed in `config.json`.
