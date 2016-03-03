@@ -13,6 +13,7 @@ type Configuration struct {
 	} `json:"raceway"`
 	MySQL struct {
 		DBHost string `json:"db_host"`
+		DBPort int    `json:"db_port"`
 		DBUser string `json:"db_user"`
 		DBPass string `json:"db_pass"`
 		DBName string `json:"db_name"`
