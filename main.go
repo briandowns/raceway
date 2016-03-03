@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 
 	"github.com/codegangsta/negroni"
 	"github.com/goincremental/negroni-sessions"
@@ -14,7 +14,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 
-	"gitlab.internal.tinyprints.com/bdowns/raceway/database"
+	"github.com/briandowns/raceway/database"
 )
 
 var taskChan = make(chan string, 0)
@@ -30,7 +30,7 @@ func main() {
 	}
 
 	// Connect to the Rally MySQL database
-	dbConn, err := database.Connect(conf.MySQL.DBUser, conf.MySQL.DBPass, conf.MySQL.DBHost, conf.MySQL.DBName)
+	dbConn, err := database.Connect(conf.MySQL.DBUser, conf.MySQL.DBPass, conf.MySQL.DBHost, conf.MySQL.DBPort, conf.MySQL.DBName)
 	if err != nil {
 		log.Fatalln(err)
 	}

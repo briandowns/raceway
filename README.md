@@ -5,14 +5,21 @@ Raceway is an application to manage [OpenStack](https://www.openstack.org/) [Ral
 ## Requirements
 
 * OpenStack Rally
-* MySQL
+* MySQL/MariaDB running on port 3307.
+
+## Creating database and user credentials for OpenStack Rally
+```bash
+mysql -u root
+CREATE DATABASE rally;
+GRANT ALL ON rally.* TO rally@localhost IDENTIFIED BY 'rally';
+```
 
 OpenStack Rally should be installed with the following parameters:
 
 ```bash
-$ wget https://github.com/openstack/rally/archive/master.zip
-$ unzip master.zip
-$ cd rally-master
+$ git clone http://github.com/openstack/rally
+$ cd rally
+$ git checkout tags/0.3.0
 $ ./install_rally.sh --system ../rally --overwrite --verbose --dbtype mysql --db-host localhost --db-user rally --db-password rally --db-name rally
 ```
 
@@ -22,12 +29,35 @@ If you have a different version of Python installed, use the example below and r
 $ ./install_rally.sh --target ../rally --overwrite --verbose --dbtype mysql --db-host localhost --db-user rally --db-password rally --db-name rally --python `which python2.7`
 ```
 
-## Installation 
+## Installation
+
+## Remote Package Dependencies
+
+Packages will be installed to your workspace directory set by GOPATH environment variable. Run `echo $GOPATH` to show your workspace directory.
+
+```bash
+go get github.com/go-sql-driver/mysql
+go get github.com/jmoiron/sqlx
+go get github.com/pborman/uuid
+go get github.com/boltdb/bolt
+go get github.com/codegangsta/negroni
+go get github.com/goincremental/negroni-sessions
+go get github.com/goincremental/negroni-sessions/cookiestore
+go get github.com/gorilla/mux
+go get github.com/robfig/cron
+go get github.com/unrolled/render
+go get github.com/briandowns/raceway/database
+```
+
+## Configurations
+
+Raceway is configured to run on MariaDB/MySQL port 3307. If your database application is runnning on a different port please update the port in `config.json` before running.
 
 ## Usage
 
 ```bash
-$ git clone git@gitlab.internal.tinyprints.com:bdowns/raceway.git
+$ git clone http://github.com/briandowns/raceway.git
+$ cd raceway
 $ go run main.go scenarios.go scheduler.go config.go
 ```
 
