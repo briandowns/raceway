@@ -32,7 +32,7 @@ Simply put the Raceway binary in your path with the public directory.  Running `
 $ git clone git@github.com:briandowns/raceway.git
 $ cd raceway
 $ make build
-$ ./raceway --help
+$ ./raceway -config </path/to/config/file>
 ```
 
 ### Web UI
