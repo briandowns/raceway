@@ -15,7 +15,7 @@ import (
 	"log"
 	"time"
 
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 	"github.com/boltdb/bolt"
 	"github.com/robfig/cron"
 )

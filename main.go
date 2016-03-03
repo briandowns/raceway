@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 
 	"github.com/codegangsta/negroni"
 	"github.com/goincremental/negroni-sessions"
