@@ -48,3 +48,10 @@ func DeploymentsByNameHandler(ren *render.Render, conf *config.Config) http.Hand
 		ren.JSON(w, http.StatusOK, db.DeploymentsByName(dp.Name))
 	}
 }
+
+// NewDeploymentsHandler
+func NewDeploymentsHandler(ren *render.Render, conf *config.Config) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		ren.JSON(w, http.StatusOK, map[string]interface{}{"deployment": "new"})
+	}
+}
