@@ -8,8 +8,8 @@ import (
 )
 
 // Connect will provide the caller with a db connection
-func Connect(user, pass, host, database string) (*sqlx.DB, error) {
-	db, err := sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(%s:3307)/%s", user, pass, host, database))
+func Connect(user string, pass string, host string, port int, database string) (*sqlx.DB, error) {
+    db, err := sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", user, pass, host, port, database))
 	if err != nil {
 		return nil, err
 	}

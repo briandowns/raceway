@@ -31,7 +31,7 @@ func main() {
 	}
 
 	// Connect to the Rally MySQL database
-	dbConn, err := database.Connect(conf.MySQL.DBUser, conf.MySQL.DBPass, conf.MySQL.DBHost, conf.MySQL.DBName)
+	dbConn, err := database.Connect(conf.MySQL.DBUser, conf.MySQL.DBPass, conf.MySQL.DBHost, conf.MySQL.DBPort, conf.MySQL.DBName)
 	if err != nil {
 		log.Fatalln(err)
 	}
