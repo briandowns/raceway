@@ -12,11 +12,12 @@ type Configuration struct {
 		AppDebug bool   `json:"app_debug"`
 	} `json:"raceway"`
 	MySQL struct {
-		DBHost string `json:"db_host"`
-		DBPort int    `json:"db_port"`
-		DBUser string `json:"db_user"`
-		DBPass string `json:"db_pass"`
-		DBName string `json:"db_name"`
+		DBHost  string `json:"db_host"`
+		DBPort  int    `json:"db_port"`
+		DBUser  string `json:"db_user"`
+		DBPass  string `json:"db_pass"`
+		DBName  string `json:"db_name"`
+		DBDebug bool   `json:"db_debug"`
 	} `json:"mysql"`
 	Scenarios struct {
 		ScenarioDir    string `json:"scenario_dir"`
