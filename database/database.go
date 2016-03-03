@@ -3,10 +3,9 @@ package database
 import (
 	"fmt"
 
-	"github.com/briandowns/aion/config"
+	"github.com/briandowns/raceway/config"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"github.com/jmoiron/sqlx"
 )
 
 // Database holds db conf and a connection
@@ -34,26 +33,29 @@ func (d *Database) connect() error {
 	if err != nil {
 		return err
 	}
-	db.LogMode(true)
+	db.LogMode(d.Conf.Database.DBDebug)
 	d.Conn = &db
 	return nil
 }
 
 // GetDeployments gets all deployments Rally is aware of
-func (d *Database) GetDeployments() []Deployment
+func (d *Database) GetDeployments() []Deployment {
 	var data []Deployment
+	d.Conn.Find(&data)
 	return data
 }
 
 // DeploymentsByName gets all deployments Rally is aware of
-func (d *Database) DeploymentsByName() []Deployment
-	var data []Deployments
-	return data
+func (d *Database) DeploymentsByName() []Deployment {
+	var data []Deployment
+	return d.Conn.Find(&data)
+	//return data
 }
 
 // TaskByUUID gets a task by its UUID
-func (d *Database) TaskByUUID() []Task {
+func (d *Database) TaskByUUID(uuid string) []Task {
 	var data []Task
+	d.Conn.Where("uuid = ?", uuid).Find(&data)
 	return data
 }
 
