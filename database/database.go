@@ -3,17 +3,40 @@ package database
 import (
 	"fmt"
 
+	"github.com/briandowns/aion/config"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
 	"github.com/jmoiron/sqlx"
 )
 
-// Connect will provide the caller with a db connection
-func Connect(user string, pass string, host string, port int, database string) (*sqlx.DB, error) {
-    db, err := sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", user, pass, host, port, database))
-	if err != nil {
+// Database holds db conf and a connection
+type Database struct {
+	Conf *config.Config
+	Conn *gorm.DB
+}
+
+// NewDatabase creates a new Database object
+func NewDatabase(conf *config.Config) (*Database, error) {
+	d := &Database{
+		Conf: conf,
+	}
+	if err := d.connect(); err != nil {
 		return nil, err
 	}
-	return db, nil
+	return d, nil
+}
+
+// Connect will provide the caller with a db connection
+func (d *Database) connect() error {
+	db, err := gorm.Open("mysql",
+		fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?timeout=%s&charset=utf8&parseTime=True&loc=Local",
+			d.Conf.Database.DBUser, d.Conf.Database.DBPass, d.Conf.Database.DBHost, d.Conf.Database.DBPort, d.Conf.Database.DBName, "60s"))
+	if err != nil {
+		return err
+	}
+	db.LogMode(true)
+	d.Conn = &db
+	return nil
 }
 
 // AllDeployments gets all deployments Rally is aware of
