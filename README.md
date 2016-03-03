@@ -24,7 +24,7 @@ $ ./install_rally.sh --target ../rally --overwrite --verbose --dbtype mysql --db
 
 ## Installation 
 
-Simply put the Raceway binary in your path with the public directory.
+Simply put the Raceway binary in your path with the public directory.  Running `make build` gets all dependencies and builds the binary while also checking for race conditions.
 
 ## Usage
 
