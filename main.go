@@ -1,17 +1,17 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 
-	"github.com/pborman/uuid"
-
 	"github.com/codegangsta/negroni"
 	"github.com/goincremental/negroni-sessions"
 	"github.com/goincremental/negroni-sessions/cookiestore"
 	"github.com/gorilla/mux"
+	"github.com/pborman/uuid"
 	"github.com/thoas/stats"
 	"github.com/unrolled/render"
 
@@ -25,7 +25,15 @@ var Conf *config.Config
 
 var signalsChan = make(chan os.Signal, 1)
 
+var configFileFlag string
+
+func init() {
+	flag.StringVar(&configFileFlag, "config", "", "path to raceway config file")
+}
+
 func main() {
+	flag.Parse()
+
 	signal.Notify(signalsChan, os.Interrupt)
 
 	go func() {
@@ -36,8 +44,14 @@ func main() {
 		}
 	}()
 
+	// don't go any further if no config is supplied
+	if configFileFlag == "" {
+		flag.Usage()
+		os.Exit(1)
+	}
+
 	// Source in the configuration
-	conf, err := config.Load("./config.json")
+	conf, err := config.Load(configFileFlag)
 	if err != nil {
 		log.Fatalln(err)
 	}
