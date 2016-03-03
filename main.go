@@ -121,7 +121,7 @@ func main() {
 	}).Methods("GET")
 
 	router.HandleFunc("/api/v1/schedules", func(w http.ResponseWriter, r *http.Request) {
-		results, err := ShowSchedules(conf)
+		results, err := ShowSchedules()
 		if err != nil {
 			log.Println(err)
 		}

@@ -9,11 +9,15 @@ import (
 
 const CMD = "rally"
 
+type Generator interface {
+	Generate(output string) error
+}
+
 var r = regexp.MustCompile("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")
 
 // Run exeutes the given task
-func TaskStart(scenario string, jsonOutput, HTMLOutput bool, cmdStartArgs ...string) error {
-	cmdArgs := []string{"task", "start", scenario}
+func TaskStart(scenario string, jsonOutput, HTMLOutput bool) error {
+	cmdStartArgs := []string{"task", "start", scenario}
 	cmd := exec.Command(CMD, cmdStartArgs...)
 	cmdReader, err := cmd.StdoutPipe()
 	if err != nil {
@@ -48,20 +52,16 @@ func TaskStart(scenario string, jsonOutput, HTMLOutput bool, cmdStartArgs ...str
 	return nil
 }
 
-type Generator interface {
-	Generate(output string) error
-}
-
 // generateHTML builds HTML pages based
-func generateHTML(taskID string, cmdStartArgs ...string) error {
-	cmdArgs := []string{"task", "report", taskID, "--output", Conf.HTMLOutputDir + "/" + taskID + ".html"}
-	cmd := exec.Command(CMD, cmdStartArgs...)
+func generateHTML(taskID string) error {
+	cmdStartArgs := []string{"task", "report", taskID, "--output", Conf.HTMLOutputDir + "/" + taskID + ".html"}
+	_ = exec.Command(CMD, cmdStartArgs...)
 	return nil
 }
 
 // generateJSON
-func generateJSON(taskID string, cmdStartArgs ...string) error {
-	cmdArgs := []string{"task", "results", taskID}
-	cmd := exec.Command(CMD, cmdStartArgs...)
+func generateJSON(taskID string) error {
+	cmdStartArgs := []string{"task", "results", taskID}
+	_ = exec.Command(CMD, cmdStartArgs...)
 	return nil
 }
