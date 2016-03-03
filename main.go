@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 
 	"github.com/pborman/uuid"
 
@@ -14,28 +16,39 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 
+	"github.com/briandowns/raceway/config"
 	"github.com/briandowns/raceway/database"
 )
 
 var taskChan = make(chan string, 0)
-var conf *Configuration
+var Conf *config.Config
+
+var signalsChan = make(chan os.Signal, 1)
 
 // Task holds task details once initialized
 type Task struct{}
 
 func main() {
+	signal.Notify(signalsChan, os.Interrupt)
+
+	go func() {
+		for sig := range signalsChan {
+			log.Printf("Exiting... %v\n", sig)
+			signalsChan = nil
+			os.Exit(1)
+		}
+	}()
+
 	// Source in the configuration
-	conf, err := Load("./config.json")
+	conf, err := config.Load("./config.json")
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	// Connect to the Rally MySQL database
-	dbConn, err := database.Connect(conf.MySQL.DBUser, conf.MySQL.DBPass, conf.MySQL.DBHost, conf.MySQL.DBPort, conf.MySQL.DBName)
+	db, err := database.NewDatabase(conf)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	defer dbConn.Close()
 
 	// Start the scheduler
 	StartScheduler(conf)
@@ -54,21 +67,13 @@ func main() {
 
 	// API routes
 	router.HandleFunc("/api/v1/deployments", func(w http.ResponseWriter, r *http.Request) {
-		d, err := database.AllDeployments(dbConn)
-		if err != nil {
-			log.Println(err)
-		}
-		ren.JSON(w, http.StatusOK, d)
+		ren.JSON(w, http.StatusOK, db.GetDeployments())
 	}).Methods("GET")
 
 	router.HandleFunc("/api/v1/deployments/{name}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
-		depName := vars["name"]
-		d, err := database.DeploymentsByName(dbConn, depName)
-		if err != nil {
-			log.Println(err)
-		}
-		ren.JSON(w, http.StatusOK, d)
+		name := vars["name"]
+		ren.JSON(w, http.StatusOK, db.DeploymentsByName(name))
 	}).Methods("GET")
 
 	router.HandleFunc("/api/v1/deployments", func(w http.ResponseWriter, r *http.Request) {
@@ -92,11 +97,7 @@ func main() {
 	}).Methods("GET")
 
 	router.HandleFunc("/api/v1/tasks", func(w http.ResponseWriter, r *http.Request) {
-		t, err := database.AllTasks(dbConn)
-		if err != nil {
-			log.Println(err)
-		}
-		ren.JSON(w, http.StatusOK, t)
+		ren.JSON(w, http.StatusOK, db.GetTasks())
 	}).Methods("GET")
 
 	router.HandleFunc("/api/v1/tasks/start", func(w http.ResponseWriter, r *http.Request) {
@@ -106,29 +107,17 @@ func main() {
 	router.HandleFunc("/api/v1/tasks/results/{task_uuid}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		taskUUID := vars["task_uuid"]
-		t, err := database.TaskResultsByUUID(dbConn, taskUUID)
-		if err != nil {
-			log.Println(err)
-		}
-		ren.JSON(w, http.StatusOK, t)
+		ren.JSON(w, http.StatusOK, db.TaskResultsByUUID(taskUUID))
 	}).Methods("GET")
 
 	router.HandleFunc("/api/v1/tasks/{task_uuid}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		taskUUID := vars["task_uuid"]
-		t, err := database.TaskByUUID(dbConn, taskUUID)
-		if err != nil {
-			log.Println(err)
-		}
-		ren.JSON(w, http.StatusOK, t)
+		ren.JSON(w, http.StatusOK, db.TaskByUUID(taskUUID))
 	}).Methods("GET")
 
 	router.HandleFunc("/api/v1/tasks/running", func(w http.ResponseWriter, r *http.Request) {
-		t, err := database.TasksRunning(dbConn)
-		if err != nil {
-			log.Println(err)
-		}
-		ren.JSON(w, http.StatusOK, t)
+		ren.JSON(w, http.StatusOK, db.TasksRunning())
 	}).Methods("GET")
 
 	router.HandleFunc("/api/v1/schedules", func(w http.ResponseWriter, r *http.Request) {

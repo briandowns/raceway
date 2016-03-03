@@ -46,9 +46,9 @@ func (d *Database) GetDeployments() []Deployment {
 }
 
 // DeploymentsByName gets all deployments Rally is aware of
-func (d *Database) DeploymentsByName() []Deployment {
+func (d *Database) DeploymentsByName(name string) []Deployment {
 	var data []Deployment
-	d.Conn.Find(&data)
+	d.Conn.Where("name = ?", name).Find(&data)
 	return data
 }
 
