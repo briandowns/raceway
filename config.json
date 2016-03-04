@@ -9,7 +9,7 @@
 		"db_user": "rally",
 		"db_pass": "rally",
 		"db_name": "rally",
-        "db_debug": true
+		"db_debug": true
 	},
 	"scenarios": {
 		"scenario_dir": "/Users/bdowns/gocode/src/gitlab.internal.tinyprints.com/bdowns/raceway/scenarios",
