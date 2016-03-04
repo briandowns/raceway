@@ -32,7 +32,7 @@ clean:
 	$(GOCLEAN) -n -i -x
 
 build: dep 
-	$(GOBUILD) -v -race 
+	$(GOBUILD) -v 
 
 # check for git
 git:
