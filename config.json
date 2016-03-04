@@ -8,7 +8,7 @@
 		"db_port": 3307,
 		"db_user": "rally",
 		"db_pass": "rally",
-		"db_name": "rally"
+		"db_name": "rally",
         "db_debug": true
 	},
 	"scenarios": {
