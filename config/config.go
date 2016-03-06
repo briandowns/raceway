@@ -57,8 +57,7 @@ func Load(cf string) (*Config, error) {
 	}
 	decoder := json.NewDecoder(confFile)
 	var conf Config
-	err = decoder.Decode(conf)
-	if err != nil {
+	if err = decoder.Decode(&conf); err != nil {
 		return nil, err
 	}
 	return &conf, nil
