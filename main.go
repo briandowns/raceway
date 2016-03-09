@@ -55,7 +55,7 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
+	log.Printf("%+v\n", conf)
 	// Start the scheduler
 	scheduler.StartScheduler(conf)
 
