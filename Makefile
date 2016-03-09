@@ -2,7 +2,7 @@
 
 GOCMD = go
 GOBUILD = $(GOCMD) build
-GOGET = $(GOCMD) get
+GOGET = $(GOCMD) get -v 
 GOCLEAN = $(GOCMD) clean
 GOINSTALL = $(GOCMD) install
 GOTEST = $(GOCMD) test
@@ -23,7 +23,18 @@ test:
 	$(GOTEST) -v -cover github.com/briandowns/raceway
 
 dep:
-	$(GOGET) -v .
+	$(GOGET) github.com/codegangsta/negroni
+	$(GOGET) github.com/goincremental/negroni-sessions
+	$(GOGET) github.com/goincremental/negroni-sessions/cookiestore
+	$(GOGET) github.com/gorilla/mux
+	$(GOGET) github.com/pborman/uuid
+	$(GOGET) github.com/thoas/stats
+	$(GOGET) github.com/unrolled/render
+	$(GOGET) github.com/boltdb/bolt
+	$(GOGET) github.com/pborman/uuid
+	$(GOGET) github.com/robfig/cron
+	$(GOGET) github.com/go-sql-driver/mysql
+	$(GOGET) github.com/jinzhu/gorm
 
 install: dep
 	$(GOINSTALL) -v
