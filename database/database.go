@@ -11,7 +11,7 @@ import (
 // Database holds db conf and a connection
 type Database struct {
 	Conf *config.Config
-	Conn *gorm.DB
+	Conn gorm.DB
 }
 
 // NewDatabase creates a new Database object
@@ -34,7 +34,7 @@ func (d *Database) connect() error {
 		return err
 	}
 	db.LogMode(d.Conf.Database.DBDebug)
-	d.Conn = &db
+	d.Conn = db
 	return nil
 }
 
